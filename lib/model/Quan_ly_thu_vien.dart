@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import './book.dart';
 
 class LibraryManager extends ChangeNotifier {
-  List<Book> listBook = [ // quan lý tong sách trong thư viện
-    Book(id: 123456, name_book: "quang", so_luong: 2),
+  List<Book> listBook = [
+    // quan lý tong sách trong thư viện
+    Book(id: 123456, name_book: "quang", so_luong: 2, so_luong_da_muon: 2),
     Book(id: 123454, name_book: "quaavng", so_luong: 2),
     Book(id: 123452, name_book: "quanag", so_luong: 2),
   ];
   // Hàm hiển thị dialog thông báo lỗi
-  void _showErrorDialog(BuildContext context, String message) {
+  void showErrorDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -27,6 +28,7 @@ class LibraryManager extends ChangeNotifier {
       },
     );
   }
+
 // ham them sach moi vao thu vien
   void addBook(BuildContext context, Book book) {
     bool isID = listBook.any((element) {
@@ -42,7 +44,7 @@ class LibraryManager extends ChangeNotifier {
       }
     } else {
       // Hiển thị thông báo lỗi không sử dụng thêm thư viện
-      _showErrorDialog(context, "Sách với ID ${book.id} đã tồn tại.");
+      showErrorDialog(context, "Sách với ID ${book.id} đã tồn tại.");
     }
   }
 
@@ -54,10 +56,22 @@ class LibraryManager extends ChangeNotifier {
   }
 
   void editBook(BuildContext context, int index, Book book) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content:
-            Text("đã sửa sách có id: ${listBook[index].id}")));
     listBook[index] = book;
-    notifyListeners();
+    if (book.so_luong_da_muon < listBook[index].so_luong) {
+      if (listBook[index].co_the_muon == false) {
+        listBook[index].co_the_muon = true;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("đã sửa sách có id: ${listBook[index].id}")));
+      print("qqqqqqqqqqqqq");
+       print(
+          "${listBook[index].so_luong_da_muon} ${listBook[index].so_luong} ${listBook[index].co_the_muon}");
+      notifyListeners();
+    } else if (book.so_luong_da_muon == listBook[index].so_luong) {
+      listBook[index].co_the_muon = false;
+      print("gkighse");
+      print(
+          "${listBook[index].so_luong_da_muon} ${listBook[index].so_luong} ${listBook[index].co_the_muon}");
+    }
   }
 }
