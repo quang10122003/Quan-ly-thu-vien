@@ -28,6 +28,29 @@ class LibraryManager extends ChangeNotifier {
       },
     );
   }
+  void showSuccessMessage(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Success"),
+          backgroundColor: Colors.green,
+          content: Text(
+            message,
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 // ham them sach moi vao thu vien
   void addBook(BuildContext context, Book book) {
@@ -49,10 +72,13 @@ class LibraryManager extends ChangeNotifier {
   }
 
   void deleteBook(BuildContext context, int index) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("đã xóa sách có id: ${listBook[index].id}")));
-    listBook.removeAt(index);
-    notifyListeners();
+    if (listBook[index].so_luong_da_muon == 0) {
+      listBook.removeAt(index);
+      showSuccessMessage(context, "đã xóa sách có id: ${listBook[index].id}");
+      notifyListeners();
+    } else {
+      showErrorDialog(context, "đang có người mượn sách ko thể xóa");
+    }
   }
 
   void editBook(BuildContext context, int index, Book book) {
@@ -61,17 +87,12 @@ class LibraryManager extends ChangeNotifier {
       if (listBook[index].co_the_muon == false) {
         listBook[index].co_the_muon = true;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("đã sửa sách có id: ${listBook[index].id}")));
-      print("qqqqqqqqqqqqq");
-       print(
-          "${listBook[index].so_luong_da_muon} ${listBook[index].so_luong} ${listBook[index].co_the_muon}");
+      showSuccessMessage(context, "đã sửa sách có id: ${listBook[index].id}");
       notifyListeners();
     } else if (book.so_luong_da_muon == listBook[index].so_luong) {
       listBook[index].co_the_muon = false;
-      print("gkighse");
-      print(
-          "${listBook[index].so_luong_da_muon} ${listBook[index].so_luong} ${listBook[index].co_the_muon}");
+      showSuccessMessage(context, "đã sửa sách có id: ${listBook[index].id}");
+      notifyListeners();
     }
   }
 }
