@@ -28,6 +28,7 @@ class LibraryManager extends ChangeNotifier {
       },
     );
   }
+
   void showSuccessMessage(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -51,6 +52,16 @@ class LibraryManager extends ChangeNotifier {
       },
     );
   }
+  // lay book tu id book
+  Book? select_book(int id) {
+    for (int i = 0; i < listBook.length; i++) {
+      if (id == listBook[i].id) {
+        return listBook[i];
+      }
+    }
+
+    return null;
+  }
 
 // ham them sach moi vao thu vien
   void addBook(BuildContext context, Book book) {
@@ -61,10 +72,6 @@ class LibraryManager extends ChangeNotifier {
     if (isID == false) {
       listBook.add(book);
       notifyListeners();
-      print("object");
-      for (int i = 0; i < listBook.length; i++) {
-        print(listBook[i].id);
-      }
     } else {
       // Hiển thị thông báo lỗi không sử dụng thêm thư viện
       showErrorDialog(context, "Sách với ID ${book.id} đã tồn tại.");
@@ -73,11 +80,11 @@ class LibraryManager extends ChangeNotifier {
 
   void deleteBook(BuildContext context, int index) {
     if (listBook[index].so_luong_da_muon == 0) {
-      listBook.removeAt(index);
-      showSuccessMessage(context, "đã xóa sách có id: ${listBook[index].id}");
+      final removedBook = listBook.removeAt(index);
+      showSuccessMessage(context, "đã xóa sách có id: ${removedBook.id}");
       notifyListeners();
     } else {
-      showErrorDialog(context, "đang có người mượn sách ko thể xóa");
+      showErrorDialog(context, "đang có người mượn sách, không thể xóa");
     }
   }
 

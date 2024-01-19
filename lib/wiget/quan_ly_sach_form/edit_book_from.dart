@@ -136,14 +136,19 @@ class editBook extends StatelessWidget {
                                   !(inputError2['soluong'] ?? false) &&
                                   (book.so_luong_da_muon <=
                                       int.parse(soluongEditcontroler.text))) {
+                                if (value.select_book(int.parse(idEditcontroler.text))?.id != null) {
+                                  Navigator.of(context).pop();
+                                  value.showErrorDialog(context,
+                                      "id đã tồn tại vui lòng thử lại ");
+                                } else {
+                                  Navigator.of(context).pop();
+                                  value.editBook(context, index, book);
+                                }
                                 // Nếu không có lỗi, thực hiện hàm edit
-                                value.editBook(context, index, book);
-                                Navigator.of(context).pop();
                               } else {
                                 Navigator.of(context).pop();
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text(
-                                        "số lượng sách mượn =${value.listBook[index].so_luong_da_muon} tổng sách ko thể nhỏ hơn")));
+                                value.showErrorDialog(context,
+                                    "số lượng sách đã mượn =${value.listBook[index].so_luong_da_muon} tổng sách ko thể nhỏ hơn");
                               }
                               // Thông báo cho người nghe sau khi dữ liệu đã được cập nhật
                               value.notifyListeners();
