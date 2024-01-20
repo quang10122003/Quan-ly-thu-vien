@@ -6,7 +6,7 @@ class Muon_sach extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-   return Scaffold(
+    return Scaffold(
       appBar: buildAppBar(context),
       body: SafeArea(
         minimum: const EdgeInsets.only(right: 20, left: 20),

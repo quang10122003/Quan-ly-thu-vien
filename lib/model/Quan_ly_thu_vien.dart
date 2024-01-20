@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quan_ly_thu_vien_flutter/model/borrowed_book.dart';
 import './book.dart';
 
 class LibraryManager extends ChangeNotifier {
@@ -52,6 +53,7 @@ class LibraryManager extends ChangeNotifier {
       },
     );
   }
+
   // lay book tu id book
   Book? select_book(int id) {
     for (int i = 0; i < listBook.length; i++) {
@@ -101,5 +103,12 @@ class LibraryManager extends ChangeNotifier {
       showSuccessMessage(context, "đã sửa sách có id: ${listBook[index].id}");
       notifyListeners();
     }
+  }
+
+  void returnBook(BuildContext context, int index, Book selectedBook) {
+    Book returnbook = listBook.firstWhere((element) => element.id == selectedBook.id);
+    int idx = listBook.indexOf(returnbook);
+    listBook[idx].so_luong_da_muon --;
+    notifyListeners();
   }
 }
