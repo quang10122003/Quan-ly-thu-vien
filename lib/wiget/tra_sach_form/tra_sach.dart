@@ -70,6 +70,7 @@ class Tra_sach extends StatelessWidget {
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
+                        Text('Danh sách mượn'),
                         Consumer<BorrowedBookManager>(
                             builder: (context, borrowed_list, child) {
                           return ListView.builder(
